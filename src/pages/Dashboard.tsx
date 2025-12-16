@@ -94,11 +94,6 @@ export const Dashboard: React.FC = () => {
     const { data, loading } = useData();
     const { mode, toggleColorMode } = useColorMode();
     const theme = useTheme();
-    const [activeIndex, setActiveIndex] = React.useState(0);
-
-    const onPieEnter = (_: any, index: number) => {
-        setActiveIndex(index);
-    };
 
     const stats = useMemo(() => {
         if (loading) return null;
@@ -327,14 +322,12 @@ export const Dashboard: React.FC = () => {
                                     <ResponsiveContainer width="100%" height="85%">
                                         <PieChart>
                                             <Pie
-                                                activeIndex={activeIndex}
                                                 activeShape={renderActiveShape}
                                                 data={stats.severityData}
                                                 cx="50%" cy="50%"
                                                 innerRadius={80} outerRadius={110}
                                                 paddingAngle={4}
                                                 dataKey="value"
-                                                onMouseEnter={onPieEnter}
                                                 cornerRadius={6}
                                             >
                                                 {stats.severityData.map((entry: any, index: number) => (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Grid, Paper, Typography, Box, Chip, Button, IconButton, Backdrop } from '@mui/material';
-import { ResponsiveContainer, RadialBarChart, RadialBar, LineChart, Line, XAxis, Tooltip, AreaChart, Area, CartesianGrid, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
+import { Paper, Typography, Box, Chip, Button, IconButton } from '@mui/material';
+import { ResponsiveContainer, AreaChart, Area, CartesianGrid, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
 import { useTheme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 import PublicIcon from '@mui/icons-material/Public';
@@ -19,7 +19,7 @@ const BentoItem = ({ children, delay = 0, sx = {}, id, onClick }: any) => {
             onClick={onClick}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30, delay }}
             style={{
                 height: '100%',
                 width: '100%',
@@ -291,9 +291,9 @@ export const ExecutiveDashboard: React.FC = () => {
             </Box>
 
             {/* Bento Grid - Default State */}
-            <Grid container spacing={3}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                 {/* 1. Large Map (Top Left) */}
-                <Grid item xs={12} lg={8} sx={{ height: 400 }}>
+                <Box sx={{ width: { xs: '100%', lg: '66%' }, height: 400, flexGrow: 1 }}>
                     <BentoItem
                         id="map-card"
                         onClick={() => setExpandedId('map-card')}
@@ -301,10 +301,10 @@ export const ExecutiveDashboard: React.FC = () => {
                     >
                         {renderMapContent()}
                     </BentoItem>
-                </Grid>
+                </Box>
 
                 {/* 2. Key Stats (Right Column) */}
-                <Grid item xs={12} lg={4}>
+                <Box sx={{ width: { xs: '100%', lg: '32%' } }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, height: '100%' }}>
                         {/* Risk Score */}
                         <Box sx={{ flex: 1 }}>
@@ -328,10 +328,10 @@ export const ExecutiveDashboard: React.FC = () => {
                             </BentoItem>
                         </Box>
                     </Box>
-                </Grid>
+                </Box>
 
                 {/* 3. Traffic Graph (Bottom Left) */}
-                <Grid item xs={12} md={7} sx={{ height: 350 }}>
+                <Box sx={{ width: { xs: '100%', md: '58%' }, height: 350, flexGrow: 1 }}>
                     <BentoItem
                         id="traffic-card"
                         onClick={() => setExpandedId('traffic-card')}
@@ -339,10 +339,10 @@ export const ExecutiveDashboard: React.FC = () => {
                     >
                         {renderTrafficContent()}
                     </BentoItem>
-                </Grid>
+                </Box>
 
                 {/* 4. Radar Chart (Bottom Mid) */}
-                <Grid item xs={12} md={5} sx={{ height: 350 }}>
+                <Box sx={{ width: { xs: '100%', md: '39%' }, height: 350 }}>
                     <BentoItem
                         id="radar-card"
                         onClick={() => setExpandedId('radar-card')}
@@ -350,8 +350,8 @@ export const ExecutiveDashboard: React.FC = () => {
                     >
                         {renderRadarContent()}
                     </BentoItem>
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
 
             {/* Expanded Overlay - Shared Layout */}
             <AnimatePresence>

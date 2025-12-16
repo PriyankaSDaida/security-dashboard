@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Box, Paper, Typography, Grid, MenuItem, Select, FormControl, InputLabel, Chip, useTheme, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Collapse } from '@mui/material';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
-import { ArrowUpward, ArrowDownward, RemoveCircle, AddCircle, BugReport, History, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Box, Paper, Typography, MenuItem, Select, FormControl, Chip, useTheme, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Collapse } from '@mui/material';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend, Cell } from 'recharts';
+import { ArrowUpward, RemoveCircle, AddCircle, History, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 
 // --- Components ---
 
@@ -91,20 +90,20 @@ const DiffRow = ({ item }: any) => {
                             <Typography variant="h6" gutterBottom component="div" sx={{ fontSize: '0.9rem', fontWeight: 700 }}>
                                 Change Details
                             </Typography>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} md={6}>
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                                <Box sx={{ width: { xs: '100%', md: '48%' } }}>
                                     <Typography variant="caption" color="text.secondary">Description</Typography>
                                     <Typography variant="body2">{item.desc}</Typography>
-                                </Grid>
-                                <Grid item xs={6} md={3}>
+                                </Box>
+                                <Box sx={{ width: { xs: '48%', md: '23%' } }}>
                                     <Typography variant="caption" color="text.secondary">Version</Typography>
                                     <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>{item.bver} → {item.aver || 'N/A'}</Typography>
-                                </Grid>
-                                <Grid item xs={6} md={3}>
+                                </Box>
+                                <Box sx={{ width: { xs: '48%', md: '23%' } }}>
                                     <Typography variant="caption" color="text.secondary">CVSS Delta</Typography>
                                     <Typography variant="body2" color="error">+{item.cvssDelta}</Typography>
-                                </Grid>
-                            </Grid>
+                                </Box>
+                            </Box>
                         </Box>
                     </Collapse>
                 </TableCell>
@@ -145,6 +144,23 @@ export const Compare: React.FC = () => {
         return { chartData, newIssues, fixedIssues, regressions, diffList };
     }, [scenarioA, scenarioB]);
 
+    const severityDeltaData = [
+        { name: 'Critical', Delta: 2 },
+        { name: 'High', Delta: -1 },
+        { name: 'Medium', Delta: 5 },
+        { name: 'Low', Delta: -3 },
+    ];
+
+    const MetricCard = ({ title, value, trend, color }: any) => (
+        <Paper sx={{ p: 2, border: `1px solid ${theme.palette.divider}`, borderRadius: 3 }}>
+            <Typography variant="caption" color="text.secondary">{title}</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>{value}</Typography>
+                <Chip size="small" label={trend} color={color === 'error' ? 'error' : color === 'success' ? 'success' : 'warning'} />
+            </Box>
+        </Paper>
+    );
+
     return (
         <Box sx={{ animation: 'fadeIn 0.5s ease-in-out', width: '100%', maxWidth: '100%' }}>
 
@@ -180,8 +196,8 @@ export const Compare: React.FC = () => {
             </Paper>
 
             {/* Metrics Grid */}
-            <Grid container spacing={3} sx={{ mb: 4 }}>
-                <Grid item xs={12} sm={6} md={3}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
                     <StatCard
                         title="New Vulns"
                         value={`+${diffData.newIssues}`}
@@ -189,8 +205,8 @@ export const Compare: React.FC = () => {
                         color={theme.palette.error.main}
                         icon={<AddCircle fontSize="large" />}
                     />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
                     <StatCard
                         title="Fixed"
                         value={diffData.fixedIssues}
@@ -198,17 +214,8 @@ export const Compare: React.FC = () => {
                         color={theme.palette.success.main}
                         icon={<RemoveCircle fontSize="large" />}
                     />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
-                    <StatCard
-                        title="Regressions"
-                        value={diffData.regressions}
-                        sub="Re-opened issues"
-                        color={theme.palette.warning.main}
-                        icon={<History fontSize="large" />}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
                     <StatCard
                         title="Risk Delta"
                         value="+12%"
@@ -216,12 +223,83 @@ export const Compare: React.FC = () => {
                         color={theme.palette.info.main}
                         icon={<ArrowUpward fontSize="large" />}
                     />
-                </Grid>
-            </Grid>
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
+                    <StatCard
+                        title="Regressions"
+                        value={diffData.regressions}
+                        sub="Re-opened issues"
+                        color={theme.palette.warning.main}
+                        icon={<History fontSize="large" />}
+                    />
+                </Box>
+            </Box>
 
-            <Grid container spacing={3}>
+            {/* Top Cards */}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 3 }}>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
+                    <MetricCard title="New Vulnerabilities" value="+12" trend="up" color="error" />
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
+                    <MetricCard title="Polished/Fixed" value="-8" trend="down" color="success" />
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
+                    <MetricCard title="Risk Score Change" value="+2.4" trend="up" color="warning" />
+                </Box>
+                <Box sx={{ width: { xs: '100%', sm: '48%', md: '23%' } }}>
+                    <MetricCard title="Regressions" value="3" trend="up" color="error" />
+                </Box>
+            </Box>
+
+            {/* Charts Section */}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 3 }}>
+                <Box sx={{ width: { xs: '100%', lg: '32%' } }}>
+                    <Paper
+                        sx={{
+                            p: 3,
+                            height: 350,
+                            borderRadius: 4,
+                            background: theme.palette.mode === 'dark' ? 'rgba(10, 25, 41, 0.7)' : '#fff',
+                            backdropFilter: 'blur(10px)',
+                            border: `1px solid ${theme.palette.divider}`
+                        }}
+                    >
+                        <Typography variant="h6" gutterBottom>Severity Delta</Typography>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={severityDeltaData} layout="vertical" margin={{ left: 20 }}>
+                                <XAxis type="number" hide />
+                                <YAxis dataKey="name" type="category" width={60} />
+                                <Tooltip cursor={{ fill: 'transparent' }} />
+                                <Bar dataKey="Delta" fill="#448AFF" radius={[0, 4, 4, 0]}>
+                                    {severityDeltaData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.Delta > 0 ? theme.palette.error.main : theme.palette.success.main} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Paper>
+                </Box>
+                <Box sx={{ width: { xs: '100%', lg: '66%' }, flexGrow: 1 }}>
+                    <Paper
+                        sx={{
+                            p: 3,
+                            height: 350,
+                            borderRadius: 4,
+                            background: theme.palette.mode === 'dark' ? 'rgba(10, 25, 41, 0.7)' : '#fff',
+                            backdropFilter: 'blur(10px)',
+                            border: `1px solid ${theme.palette.divider}`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <Typography color="text.secondary">Detailed Regression Analysis Chart (Coming Soon)</Typography>
+                    </Paper>
+                </Box>
+            </Box>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                 {/* Chart Section */}
-                <Grid item xs={12} lg={4}>
+                <Box sx={{ width: { xs: '100%', lg: '32%' } }}>
                     <Paper sx={{
                         p: 3,
                         height: '100%',
@@ -246,10 +324,10 @@ export const Compare: React.FC = () => {
                             </BarChart>
                         </ResponsiveContainer>
                     </Paper>
-                </Grid>
+                </Box>
 
                 {/* Detailed Table Section */}
-                <Grid item xs={12} lg={8}>
+                <Box sx={{ width: { xs: '100%', lg: '66%' }, flexGrow: 1 }}>
                     <Paper sx={{
                         height: '100%',
                         minHeight: 500,
@@ -281,8 +359,8 @@ export const Compare: React.FC = () => {
                             </Table>
                         </TableContainer>
                     </Paper>
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
         </Box>
     );
 };

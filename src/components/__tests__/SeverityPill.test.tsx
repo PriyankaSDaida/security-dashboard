@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { SeverityPill } from '../SeverityPill';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { describe, it, expect } from 'vitest';

@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-globals */
-import { Vulnerability } from './types';
 import realData from './realData_sample.json';
 
 // Web Worker to handle large data fetching and parsing
