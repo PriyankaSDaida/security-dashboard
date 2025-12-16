@@ -102,31 +102,34 @@ const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#1565C0', // Strong Corporate Blue
-      light: '#5E92F3',
-      dark: '#003C8F',
+      main: '#6366F1', // Electric Indigo
+      light: '#818CF8',
+      dark: '#4F46E5',
     },
     secondary: {
-      main: '#0288D1', // Slate Blue/Cyan
-      light: '#5EB8FF',
-      dark: '#005B9F',
+      main: '#EC4899', // Hot Pink / Magenta
+      light: '#F472B6',
+      dark: '#DB2777',
     },
     background: {
-      default: '#F5F7FA', // Cool Light Gray/White
+      default: '#F1F5F9', // Softer Slate Gray
       paper: '#FFFFFF',
     },
     text: {
-      primary: '#1E293B', // Slate gray text
-      secondary: '#64748B',
+      primary: '#1E293B', // Slate 800
+      secondary: '#64748B', // Slate 500
     },
     error: {
-      main: '#D32F2F',
+      main: '#EF4444',
     },
     warning: {
-      main: '#ED6C02',
+      main: '#F59E0B',
     },
     success: {
-      main: '#2E7D32',
+      main: '#10B981', // Emerald
+    },
+    info: {
+      main: '#3B82F6',
     },
   },
   typography: {
@@ -157,9 +160,12 @@ const lightThemeOptions: ThemeOptions = {
     MuiPaper: {
       styleOverrides: {
         root: {
+          backgroundColor: 'rgba(255, 255, 255, 0.7)', // Semi-transparent
+          backdropFilter: 'blur(16px) saturate(160%)', // Frosted glass with boost
           backgroundImage: 'none',
-          border: '1px solid rgba(0, 0, 0, 0.08)',
-          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.5)',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+          borderRadius: 16,
         },
       },
     },
@@ -168,15 +174,30 @@ const lightThemeOptions: ThemeOptions = {
         root: {
           borderRadius: 8,
           boxShadow: 'none',
+          textTransform: 'none',
           '&:hover': {
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            boxShadow: '0 4px 14px 0 rgba(99, 102, 241, 0.39)', // Indigo glow
+            transform: 'translateY(-1px)',
           },
+          transition: 'all 0.2s ease-in-out',
         },
       },
     },
     MuiCssBaseline: {
       styleOverrides: {
         body: {
+          backgroundColor: '#F8FAFC',
+          backgroundImage: `
+            radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, transparent 50%), 
+            radial-gradient(at 50% 0%, hsla(225,39%,30%,0) 0, transparent 50%), 
+            radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, transparent 50%),
+            radial-gradient(at 10% 10%, hsla(256, 90%, 75%, 0.12) 0px, transparent 50%),
+            radial-gradient(at 90% 10%, hsla(192, 90%, 70%, 0.12) 0px, transparent 50%),
+            radial-gradient(at 50% 50%, hsla(320, 80%, 70%, 0.1) 0px, transparent 50%),
+            radial-gradient(at 80% 90%, hsla(260, 90%, 80%, 0.12) 0px, transparent 50%),
+            radial-gradient(at 10% 90%, hsla(200, 90%, 70%, 0.12) 0px, transparent 50%)
+          `,
+          backgroundAttachment: 'fixed',
           scrollbarColor: '#959595 #F4F6F8',
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
@@ -187,7 +208,8 @@ const lightThemeOptions: ThemeOptions = {
             borderRadius: 8,
             backgroundColor: '#959595',
             minHeight: 24,
-            border: '2px solid #F4F6F8',
+            border: '2px solid transparent',
+            backgroundClip: 'content-box',
           },
         },
       },

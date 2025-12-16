@@ -158,7 +158,7 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({ children }) => {
                 </Box>
 
                 {/* Page Content */}
-                <Box sx={{ p: 4, maxWidth: 1600, mx: 'auto' }}>
+                <Box sx={{ p: 4, width: '100%', mx: 'auto' }}>
                     {children}
                 </Box>
             </Box>

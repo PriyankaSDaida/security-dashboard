@@ -35,6 +35,13 @@ export function generateMockData(count: number): Vulnerability[] {
             description: `Sample security vulnerability description for ${randomItem(PACKAGES)}. This issue allows attackers to...`,
             riskFactors: Array.from({ length: Math.floor(Math.random() * 3) + 1 }, () => randomItem(RISK_FACTORS)),
             kaiStatus: randomItem(KAI_STATUSES),
+            // Analyst Persona Data
+            exploitAvailable: Math.random() > 0.7, // 30% chance
+            internetFacing: Math.random() > 0.6, // 40% chance
+            assetCriticality: randomItem(['High', 'Medium', 'Low']),
+            slaStatus: randomItem(['On Track', 'At Risk', 'Overdue']),
+            owner: randomItem(['Alice S.', 'Bob M.', 'Charlie D.', 'Team Alpha']),
+            lastSynced: new Date(Date.now() - Math.floor(Math.random() * 1000 * 60 * 60)).toISOString(), // Last hour
         };
     });
 }
