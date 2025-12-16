@@ -12,6 +12,13 @@ export interface Vulnerability {
     riskFactors: string[];
     kaiStatus: string; // e.g., "invalid - norisk", "ai-invalid-norisk", "valid", "investigate"
     analysis?: string; // AI analysis text?
+    // Analyst Persona Fields
+    exploitAvailable: boolean;
+    internetFacing: boolean;
+    assetCriticality: 'High' | 'Medium' | 'Low';
+    slaStatus: 'On Track' | 'At Risk' | 'Overdue';
+    owner: string;
+    lastSynced: string;
 }
 
 export interface DashboardMetrics {
