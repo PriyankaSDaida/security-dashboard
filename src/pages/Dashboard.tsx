@@ -26,7 +26,7 @@ const renderActiveShape = (props: unknown) => {
         startAngle: number; endAngle: number; fill: string;
         payload: { name: string }; percent: number;
     };
-    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
+
     return (
         <g>
             <text x={cx} y={cy} dy={-10} textAnchor="middle" fill="#fff" fontWeight="bold" fontSize={14}>
