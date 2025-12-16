@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, useTheme, Avatar, Tooltip as MuiTooltip } from '@mui/material';
 import { Dashboard as DashboardIcon, BugReport, CompareArrows, Settings, MenuOpen, Search, Notifications, Brightness4, Brightness7 } from '@mui/icons-material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { useColorMode } from '../contexts/ColorModeContext';
 import { motion } from 'framer-motion';
 
@@ -9,7 +9,7 @@ const SIDEBAR_WIDTH = 260;
 const COLLAPSED_WIDTH = 80;
 
 interface ModernLayoutProps {
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 export const ModernLayout: React.FC<ModernLayoutProps> = ({ children }) => {
@@ -159,7 +159,7 @@ export const ModernLayout: React.FC<ModernLayoutProps> = ({ children }) => {
 
                 {/* Page Content */}
                 <Box sx={{ p: 4, width: '100%', mx: 'auto' }}>
-                    {children}
+                    {children || <Outlet />}
                 </Box>
             </Box>
         </Box>

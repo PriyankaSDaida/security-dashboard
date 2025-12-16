@@ -10,6 +10,8 @@ import { ExecutiveDashboard } from './pages/ExecutiveDashboard';
 import { VulnerabilityList } from './pages/VulnerabilityList';
 import { Compare } from './pages/Compare';
 import { Settings } from './pages/Settings';
+import { Login } from './pages/Login';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 const AppContent: React.FC = () => {
   const { mode } = useColorMode();
@@ -20,15 +22,19 @@ const AppContent: React.FC = () => {
       <CssBaseline />
       <DataProvider>
         <BrowserRouter>
-          <ModernLayout>
-            <Routes>
-              <Route path="/" element={<ExecutiveDashboard />} />
-              <Route path="/detailed" element={<Dashboard />} />
-              <Route path="/vulnerabilities" element={<VulnerabilityList />} />
-              <Route path="/compare" element={<Compare />} />
-              <Route path="/settings" element={<Settings />} />
-            </Routes>
-          </ModernLayout>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+
+            <Route element={<ProtectedRoute />}>
+              <Route element={<ModernLayout />}>
+                <Route path="/" element={<ExecutiveDashboard />} />
+                <Route path="/detailed" element={<Dashboard />} />
+                <Route path="/vulnerabilities" element={<VulnerabilityList />} />
+                <Route path="/compare" element={<Compare />} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
+            </Route>
+          </Routes>
         </BrowserRouter>
       </DataProvider>
     </ThemeProvider>
