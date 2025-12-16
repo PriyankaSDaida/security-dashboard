@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import { Box, Paper, Typography, Grid, MenuItem, Select, FormControl, InputLabel, Chip, useTheme, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Collapse } from '@mui/material';
+import { Box, Paper, Typography, Grid, MenuItem, Select, FormControl, Chip, useTheme, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Collapse } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
-import { ArrowUpward, ArrowDownward, RemoveCircle, AddCircle, BugReport, History, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowUpward, RemoveCircle, AddCircle, History, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 
 // --- Components ---
 
@@ -92,15 +91,15 @@ const DiffRow = ({ item }: any) => {
                                 Change Details
                             </Typography>
                             <Grid container spacing={2}>
-                                <Grid item xs={12} md={6}>
+                                <Grid size={{ xs: 12, md: 6 }}>
                                     <Typography variant="caption" color="text.secondary">Description</Typography>
                                     <Typography variant="body2">{item.desc}</Typography>
                                 </Grid>
-                                <Grid item xs={6} md={3}>
+                                <Grid size={{ xs: 6, md: 3 }}>
                                     <Typography variant="caption" color="text.secondary">Version</Typography>
                                     <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>{item.bver} → {item.aver || 'N/A'}</Typography>
                                 </Grid>
-                                <Grid item xs={6} md={3}>
+                                <Grid size={{ xs: 6, md: 3 }}>
                                     <Typography variant="caption" color="text.secondary">CVSS Delta</Typography>
                                     <Typography variant="body2" color="error">+{item.cvssDelta}</Typography>
                                 </Grid>
@@ -181,7 +180,7 @@ export const Compare: React.FC = () => {
 
             {/* Metrics Grid */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <StatCard
                         title="New Vulns"
                         value={`+${diffData.newIssues}`}
@@ -190,7 +189,7 @@ export const Compare: React.FC = () => {
                         icon={<AddCircle fontSize="large" />}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <StatCard
                         title="Fixed"
                         value={diffData.fixedIssues}
@@ -199,7 +198,7 @@ export const Compare: React.FC = () => {
                         icon={<RemoveCircle fontSize="large" />}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <StatCard
                         title="Regressions"
                         value={diffData.regressions}
@@ -208,7 +207,7 @@ export const Compare: React.FC = () => {
                         icon={<History fontSize="large" />}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                     <StatCard
                         title="Risk Delta"
                         value="+12%"
@@ -221,7 +220,7 @@ export const Compare: React.FC = () => {
 
             <Grid container spacing={3}>
                 {/* Chart Section */}
-                <Grid item xs={12} lg={4}>
+                <Grid size={{ xs: 12, lg: 4 }}>
                     <Paper sx={{
                         p: 3,
                         height: '100%',
@@ -249,7 +248,7 @@ export const Compare: React.FC = () => {
                 </Grid>
 
                 {/* Detailed Table Section */}
-                <Grid item xs={12} lg={8}>
+                <Grid size={{ xs: 12, lg: 8 }}>
                     <Paper sx={{
                         height: '100%',
                         minHeight: 500,

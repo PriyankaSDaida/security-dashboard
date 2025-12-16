@@ -5,82 +5,94 @@ const darkThemeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#448AFF', // Strong Blue (Light enough for dark mode)
-      light: '#82B1FF',
-      dark: '#2962FF',
+      main: '#2979FF', // Electric Blue
+      light: '#75A7FF',
+      dark: '#004ECB',
     },
     secondary: {
-      main: '#18FFFF', // Bright Cyan accent
-      light: '#76FFFF',
-      dark: '#00CBCC',
+      main: '#00E5FF', // Neon Cyan
+      light: '#6EFFDD',
+      dark: '#00B2CC',
     },
     background: {
-      default: '#0A1929', // Deep Navy
-      paper: '#132F4C', // Lighter Navy for cards
+      default: '#050A14', // Deep Midnight Blue
+      paper: 'rgba(19, 47, 76, 0.4)', // Glassy Lighter Navy
     },
     text: {
       primary: '#F3F4F6',
-      secondary: '#B0BEC5',
+      secondary: '#94A3B8',
     },
     error: {
-      main: '#FF5252',
+      main: '#FF5252', // Neon Red
     },
     warning: {
-      main: '#FFB74D',
+      main: '#FFAB40', // Neon Orange
     },
     success: {
-      main: '#69F0AE',
+      main: '#00E676', // Neon Green
+    },
+    info: {
+      main: '#448AFF',
     },
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: {
-      fontSize: '2.5rem',
-      fontWeight: 700,
-      letterSpacing: '-0.02em',
-    },
-    h2: {
-      fontSize: '2rem',
-      fontWeight: 600,
-      letterSpacing: '-0.01em',
-    },
-    h3: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
-    },
-    h6: {
-      fontWeight: 600,
-    },
-    button: {
-      textTransform: 'none',
-      fontWeight: 600,
-    },
+    h1: { fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' },
+    h2: { fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.01em', color: '#fff' },
+    h3: { fontSize: '1.75rem', fontWeight: 700, color: '#F8FAFC' },
+    h4: { fontWeight: 700, letterSpacing: '-0.01em' },
+    h6: { fontWeight: 600, letterSpacing: '0.01em' },
+    subtitle1: { letterSpacing: '0.01em' },
+    subtitle2: { fontWeight: 600, letterSpacing: '0.01em' },
+    button: { textTransform: 'none', fontWeight: 600, letterSpacing: '0.02em' },
   },
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
+          backgroundColor: 'rgba(19, 47, 76, 0.4)', // Base for glass
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.12)',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          backgroundColor: 'transparent',
+          boxShadow: 'none',
+          border: 'none',
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
-          boxShadow: 'none',
+          borderRadius: 10,
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
           '&:hover': {
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            boxShadow: '0 6px 12px rgba(41, 121, 255, 0.24)',
           },
+        },
+        containedPrimary: {
+          background: 'linear-gradient(135deg, #2979FF 0%, #1565C0 100%)',
         },
       },
     },
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          scrollbarColor: '#448AFF #0A1929',
+          backgroundColor: '#050A14',
+          backgroundImage: `
+            radial-gradient(circle at 10% 20%, rgba(41, 121, 255, 0.08) 0%, transparent 40%),
+            radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.05) 0%, transparent 40%)
+          `,
+          backgroundAttachment: 'fixed',
+          scrollbarColor: '#2979FF #050A14',
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             backgroundColor: 'transparent',
             width: '8px',
@@ -88,9 +100,9 @@ const darkThemeOptions: ThemeOptions = {
           },
           '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
             borderRadius: 8,
-            backgroundColor: '#448AFF',
+            backgroundColor: '#2979FF',
             minHeight: 24,
-            border: '2px solid #0A1929',
+            border: '2px solid #050A14',
           },
         },
       },
@@ -221,5 +233,4 @@ export const getTheme = (mode: 'light' | 'dark') => {
   return createTheme(mode === 'light' ? lightThemeOptions : darkThemeOptions);
 };
 
-export const theme = createTheme(darkThemeOptions); // Default export kept for backward compat if needed temporarily
-
+export const theme = createTheme(darkThemeOptions);
