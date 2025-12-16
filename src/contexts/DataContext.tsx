@@ -12,6 +12,8 @@ interface DataContextType {
     searchQuery: string;
     setSearchQuery: (query: string) => void;
     refetch: () => Promise<unknown>;
+    refreshInterval: number;
+    setRefreshInterval: (interval: number) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -35,10 +37,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
     const [searchQuery, setSearchQuery] = useState('');
 
+    const [refreshInterval, setRefreshInterval] = useState(1000 * 60 * 5); // Default 5 mins
+
     const { data: rawData = [], isLoading: loading, refetch } = useQuery({
         queryKey: ['vulnerabilities'],
         queryFn: fetchVulnerabilities,
-        staleTime: 1000 * 60 * 5, // 5 minutes
+        refetchInterval: refreshInterval > 0 ? refreshInterval : false,
+        staleTime: 1000 * 60 * 5,
     });
 
     const applyFilter = (filterId: string, isActive: boolean) => {
@@ -95,7 +100,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             activeFilters,
             searchQuery,
             setSearchQuery,
-            refetch
+            refetch,
+            refreshInterval,
+            setRefreshInterval
         }}>
             {children}
         </DataContext.Provider>
