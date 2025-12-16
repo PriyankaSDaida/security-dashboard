@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Paper, Typography, Box, Chip, Button, IconButton } from '@mui/material';
+import { Paper, Typography, Box, Chip, Button, IconButton, type SxProps, type TypographyProps } from '@mui/material';
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, type Theme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -13,7 +13,7 @@ import BoltIcon from '@mui/icons-material/Bolt';
 interface BentoItemProps {
     children: React.ReactNode;
     delay?: number;
-    sx?: any;
+    sx?: SxProps<Theme>;
     id?: string;
     onClick?: () => void;
 }
@@ -67,7 +67,7 @@ const BentoItem = ({ children, delay = 0, sx = {}, id, onClick }: BentoItemProps
 };
 
 interface NeonTextProps {
-    variant?: any;
+    variant?: TypographyProps['variant'];
     children: React.ReactNode;
     color?: string;
 }

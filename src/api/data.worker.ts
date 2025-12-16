@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 import realData from './realData_sample.json';
 
 // Web Worker to handle large data fetching and parsing
