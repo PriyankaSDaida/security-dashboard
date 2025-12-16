@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 import type { Vulnerability } from '../api/types';
 import { generateMockData } from '../api/mockData';
+import { useQuery } from '@tanstack/react-query';
 
 interface DataContextType {
     data: Vulnerability[];
@@ -10,7 +11,7 @@ interface DataContextType {
     activeFilters: Set<string>;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
-    loadData: () => Promise<void>;
+    refetch: () => Promise<any>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -21,27 +22,24 @@ export const useData = () => {
     return context;
 };
 
+// Simulate async API call
+const fetchVulnerabilities = async (): Promise<Vulnerability[]> => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(generateMockData(50000));
+        }, 800);
+    });
+};
+
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [data, setData] = useState<Vulnerability[]>([]);
-    const [loading, setLoading] = useState(true);
     const [activeFilters, setActiveFilters] = useState<Set<string>>(new Set());
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Initial Data Load
-    const loadData = useCallback(async () => {
-        setLoading(true);
-        // Simulate network delay or real fetch
-        // For now, use Mock Data
-        setTimeout(() => {
-            const mock = generateMockData(50000); // 50k records to test performance
-            setData(mock);
-            setLoading(false);
-        }, 1000);
-    }, []);
-
-    useEffect(() => {
-        loadData();
-    }, [loadData]);
+    const { data: rawData = [], isLoading: loading, refetch } = useQuery({
+        queryKey: ['vulnerabilities'],
+        queryFn: fetchVulnerabilities,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    });
 
     const applyFilter = (filterId: string, isActive: boolean) => {
         setActiveFilters(prev => {
@@ -56,7 +54,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const filteredData = useMemo(() => {
-        let result = data;
+        let result = rawData;
 
         // 1. Text Search
         if (searchQuery) {
@@ -86,18 +84,18 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
 
         return result;
-    }, [data, activeFilters, searchQuery]);
+    }, [rawData, activeFilters, searchQuery]);
 
     return (
         <DataContext.Provider value={{
-            data,
+            data: rawData,
             filteredData,
             loading,
             applyFilter,
             activeFilters,
             searchQuery,
             setSearchQuery,
-            loadData
+            refetch
         }}>
             {children}
         </DataContext.Provider>
