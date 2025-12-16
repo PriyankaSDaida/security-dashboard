@@ -3,14 +3,22 @@ import { Paper, Typography, Box, Chip, Button, IconButton } from '@mui/material'
 import { ResponsiveContainer, AreaChart, Area, CartesianGrid, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts';
 import { useTheme } from '@mui/material/styles';
 import { motion, AnimatePresence } from 'framer-motion';
-import PublicIcon from '@mui/icons-material/Public';
+
 import CloseIcon from '@mui/icons-material/Close';
 import BugReportIcon from '@mui/icons-material/BugReport';
 import BoltIcon from '@mui/icons-material/Bolt';
 
 // --- Cyber Components ---
 
-const BentoItem = ({ children, delay = 0, sx = {}, id, onClick }: any) => {
+interface BentoItemProps {
+    children: React.ReactNode;
+    delay?: number;
+    sx?: any;
+    id?: string;
+    onClick?: () => void;
+}
+
+const BentoItem = ({ children, delay = 0, sx = {}, id, onClick }: BentoItemProps) => {
     const theme = useTheme();
 
     return (
@@ -58,7 +66,13 @@ const BentoItem = ({ children, delay = 0, sx = {}, id, onClick }: any) => {
     );
 };
 
-const NeonText = ({ variant = 'h4', children, color = '#fff' }: any) => (
+interface NeonTextProps {
+    variant?: any;
+    children: React.ReactNode;
+    color?: string;
+}
+
+const NeonText = ({ variant = 'h4', children, color = '#fff' }: NeonTextProps) => (
     <Typography variant={variant} sx={{
         fontWeight: 800,
         color: color,
@@ -72,7 +86,13 @@ const NeonText = ({ variant = 'h4', children, color = '#fff' }: any) => (
 
 // --- Filters & State ---
 
-const FilterButton = ({ active, onClick, children }: any) => (
+interface FilterButtonProps {
+    active: boolean;
+    onClick: () => void;
+    children: React.ReactNode;
+}
+
+const FilterButton = ({ active, onClick, children }: FilterButtonProps) => (
     <Button
         size="small"
         onClick={(e) => { e.stopPropagation(); onClick(); }} // Stop propagation specifically
@@ -93,48 +113,76 @@ const FilterButton = ({ active, onClick, children }: any) => (
 // Re-using chart components (ThreatMap, SecurityRadar, AreaGradientChart need prop tweaks to fit container)
 // We will simply render them as children.
 
-const ThreatMap = ({ region }: { region: string }) => (
-    <Box sx={{
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'radial-gradient(circle at center, rgba(68,138,255,0.08) 0%, transparent 70%)',
-        flexGrow: 1
-    }}>
-        <PublicIcon sx={{ fontSize: 240, color: 'rgba(68,138,255,0.1)', filter: 'drop-shadow(0 0 20px rgba(68,138,255,0.2))' }} />
+const ThreatMap = ({ region }: { region: string }) => {
+    const theme = useTheme();
+    // Generate static random positions for the map
+    const [connectionPoints] = useState(() => {
+        return Array.from({ length: 15 }).map(() => ({
+            top: region === 'APAC' ? Math.random() * 30 + 50 : Math.random() * 60 + 20,
+            left: region === 'APAC' ? Math.random() * 30 + 60 : Math.random() * 80 + 10,
+            delay: Math.random()
+        }));
+    });
 
-        {/* Animated Pings */}
-        {[...Array(region === 'ALL' ? 8 : 3)].map((_, i) => (
-            <motion.div
-                key={i}
-                style={{
-                    position: 'absolute',
-                    top: region === 'APAC' ? `${Math.random() * 30 + 50}%` : `${Math.random() * 60 + 20}%`,
-                    left: region === 'APAC' ? `${Math.random() * 30 + 60}%` : `${Math.random() * 80 + 10}%`,
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    backgroundColor: '#00E5FF',
-                    boxShadow: '0 0 10px #00E5FF'
-                }}
-                animate={{
-                    scale: [1, 3, 1],
-                    opacity: [0.8, 0, 0.8],
-                    boxShadow: ['0 0 10px #00E5FF', '0 0 30px #00E5FF', '0 0 10px #00E5FF']
-                }}
-                transition={{ duration: 1.5 + Math.random(), repeat: Infinity, ease: "easeInOut" }}
-            />
-        ))}
+    return (
+        <div style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden' }}>
+            {/* ... Map SVG ... */}
+            <svg viewBox="0 0 800 400" style={{ width: '100%', height: '100%', opacity: 0.8 }}>
+                {/* Simplified World Map Path */}
+                <path d="M399.999,0.001C179.088,0.001,0,179.089,0,400.001c0,220.912,179.088,400,399.999,400c220.912,0,400.001-179.088,400.001-400C800,179.089,620.911,0.001,399.999,0.001z M399.999,720.001c-176.73,0-319.999-143.27-319.999-320c0-176.73,143.269-319.999,319.999-319.999c176.73,0,320.001,143.269,320.001,319.999C720,576.731,576.73,720.001,399.999,720.001z" fill={theme.palette.primary.main} fillOpacity={0.2} />
+            </svg>
 
-        <Box sx={{ position: 'absolute', bottom: 20, left: 20 }}>
-            <NeonText variant="h6" color="#448AFF">{region} THREAT MONITOR</NeonText>
-            <Typography variant="caption" sx={{ color: '#aaa', letterSpacing: 2 }}>LIVE INTEL FEED</Typography>
-        </Box>
-    </Box>
-);
+            {/* Connection Points */}
+            {connectionPoints.map((point: { top: number; left: number; delay: number }, i: number) => (
+                <motion.div
+                    key={i}
+                    style={{
+                        position: 'absolute',
+                        top: `${point.top}%`,
+                        left: `${point.left}%`,
+                        width: 8,
+                        height: 8,
+                        borderRadius: '50%',
+                        backgroundColor: theme.palette.secondary.main,
+                        boxShadow: `0 0 10px ${theme.palette.secondary.main}`
+                    }}
+                    animate={{
+                        scale: [1, 1.5, 1],
+                        opacity: [0.5, 1, 0.5]
+                    }}
+                    transition={{
+                        duration: 2 + point.delay,
+                        repeat: Infinity,
+                        delay: point.delay
+                    }}
+                />
+            ))}
+
+            {/* Attack Lines (Decorative) */}
+            {connectionPoints.slice(0, 5).map((point: { delay: number }, i: number) => (
+                <motion.div
+                    key={`line-${i}`}
+                    style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        width: '2px',
+                        height: '2px',
+                        background: '#00E5FF',
+                        transformOrigin: '0 0',
+                        boxShadow: '0 0 8px #00E5FF'
+                    }}
+                    animate={{
+                        height: [0, 100, 0],
+                        opacity: [0, 1, 0],
+                        rotate: [0, 360]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, delay: point.delay * 2, ease: "linear" }}
+                />
+            ))}
+        </div>
+    );
+};
 
 const SecurityRadar = () => {
     const data = [

@@ -20,7 +20,12 @@ const COLORS = {
     Safe: '#448AFF'
 };
 
-const renderActiveShape = (props: any) => {
+const renderActiveShape = (props: unknown) => {
+    const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent } = props as {
+        cx: number; cy: number; innerRadius: number; outerRadius: number;
+        startAngle: number; endAngle: number; fill: string;
+        payload: { name: string }; percent: number;
+    };
     const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent } = props;
     return (
         <g>
@@ -53,7 +58,18 @@ const renderActiveShape = (props: any) => {
     );
 };
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+interface TooltipProps {
+    active?: boolean;
+    payload?: Array<{
+        name: string;
+        value: number;
+        fill?: string;
+        stroke?: string;
+    }>;
+    label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
         return (
             <Paper
@@ -132,16 +148,19 @@ export const Dashboard: React.FC = () => {
         // Simple mock formula: 100 - (Critical * 0.5 + High * 0.2) / Total * 100 * Scale
         const healthScore = Math.max(0, Math.min(100, 85));
 
-        const recentActivity = data.slice(0, 5).map((item, i) => ({
+        return { severityData, riskData, trendData, total, critical, high, fixRate, mttr, healthScore };
+    }, [data, loading]);
+
+    // Generate recent activity with stable randoms
+    const [recentActivity] = React.useState(() => {
+        return data.slice(0, 5).map((item, i) => ({
             id: i,
             cve: item.cveId,
             pkg: item.packageName,
             severity: item.severity,
-            time: `${Math.floor(Math.random() * 23) + 1}h ago`
+            time: `${Math.floor(Math.random() * 23) + 1}h ago` // Only runs once on mount
         }));
-
-        return { severityData, riskData, trendData, total, critical, high, fixRate, mttr, healthScore, recentActivity };
-    }, [data, loading]);
+    });
 
     if (loading || !stats) {
         return (
@@ -258,7 +277,7 @@ export const Dashboard: React.FC = () => {
                                     <Typography variant="h6" sx={{ fontWeight: 700 }}>Recent Activity</Typography>
                                 </Box>
                                 <List sx={{ p: 0 }}>
-                                    {stats.recentActivity.map((activity, i) => (
+                                    {recentActivity.map((activity, i) => (
                                         <React.Fragment key={i}>
                                             <ListItem alignItems="flex-start" sx={{ px: 3, py: 2 }}>
                                                 <ListItemAvatar>
@@ -276,7 +295,7 @@ export const Dashboard: React.FC = () => {
                                                     }
                                                 />
                                             </ListItem>
-                                            {i < stats.recentActivity.length - 1 && <Divider component="li" />}
+                                            {i < recentActivity.length - 1 && <Divider component="li" />}
                                         </React.Fragment>
                                     ))}
                                 </List>
@@ -330,7 +349,7 @@ export const Dashboard: React.FC = () => {
                                                 dataKey="value"
                                                 cornerRadius={6}
                                             >
-                                                {stats.severityData.map((entry: any, index: number) => (
+                                                {stats.severityData.map((entry: { name: string; value: number }, index: number) => (
                                                     <Cell key={`cell-${index}`} fill={COLORS[entry.name as keyof typeof COLORS] || '#888'} stroke="none" />
                                                 ))}
                                             </Pie>

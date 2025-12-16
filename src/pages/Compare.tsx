@@ -2,10 +2,56 @@ import React, { useState, useMemo } from 'react';
 import { Box, Paper, Typography, MenuItem, Select, FormControl, Chip, useTheme, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Collapse } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend, Cell } from 'recharts';
 import { ArrowUpward, RemoveCircle, AddCircle, History, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { useData } from '../contexts/DataContext';
+
+// --- Interfaces ---
+
+interface StatCardProps {
+    title: string;
+    value: string | number;
+    sub: string;
+    color: string;
+    icon: React.ReactNode;
+}
+
+interface ItemType {
+    id: string;
+    pkg: string;
+    severity: string;
+    type: string;
+    desc: string;
+    bver: string;
+    aver: string;
+    cvssDelta: number;
+}
+
+interface DiffRowProps {
+    item: ItemType;
+}
+
+interface MetricCardProps {
+    title: string;
+    value: string;
+    trend: 'up' | 'down';
+    color: 'error' | 'success' | 'warning' | 'info' | 'default' | 'primary' | 'secondary';
+}
 
 // --- Components ---
 
-const StatCard = ({ title, value, sub, color, icon }: any) => {
+const MetricCard = ({ title, value, trend, color }: MetricCardProps) => {
+    const theme = useTheme();
+    return (
+        <Paper sx={{ p: 2, border: `1px solid ${theme.palette.divider}`, borderRadius: 3 }}>
+            <Typography variant="caption" color="text.secondary">{title}</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography variant="h5" sx={{ fontWeight: 700 }}>{value}</Typography>
+                <Chip size="small" label={trend} color={color === 'error' ? 'error' : color === 'success' ? 'success' : 'warning'} />
+            </Box>
+        </Paper>
+    );
+};
+
+const StatCard = ({ title, value, sub, color, icon }: StatCardProps) => {
     const theme = useTheme();
     return (
         <Paper
@@ -45,7 +91,7 @@ const StatCard = ({ title, value, sub, color, icon }: any) => {
     );
 };
 
-const DiffRow = ({ item }: any) => {
+const DiffRow = ({ item }: DiffRowProps) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
 
@@ -114,6 +160,7 @@ const DiffRow = ({ item }: any) => {
 
 export const Compare: React.FC = () => {
     const theme = useTheme();
+    const { data, loading } = useData();
     const [scenarioA, setScenarioA] = useState('main');
     const [scenarioB, setScenarioB] = useState('feature-branch');
 
@@ -142,7 +189,8 @@ export const Compare: React.FC = () => {
         ];
 
         return { chartData, newIssues, fixedIssues, regressions, diffList };
-    }, [scenarioA, scenarioB]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, loading]);
 
     const severityDeltaData = [
         { name: 'Critical', Delta: 2 },
@@ -151,15 +199,8 @@ export const Compare: React.FC = () => {
         { name: 'Low', Delta: -3 },
     ];
 
-    const MetricCard = ({ title, value, trend, color }: any) => (
-        <Paper sx={{ p: 2, border: `1px solid ${theme.palette.divider}`, borderRadius: 3 }}>
-            <Typography variant="caption" color="text.secondary">{title}</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>{value}</Typography>
-                <Chip size="small" label={trend} color={color === 'error' ? 'error' : color === 'success' ? 'success' : 'warning'} />
-            </Box>
-        </Paper>
-    );
+    // MetricCard moved outside
+
 
     return (
         <Box sx={{ animation: 'fadeIn 0.5s ease-in-out', width: '100%', maxWidth: '100%' }}>

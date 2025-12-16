@@ -11,7 +11,7 @@ interface DataContextType {
     activeFilters: Set<string>;
     searchQuery: string;
     setSearchQuery: (query: string) => void;
-    refetch: () => Promise<any>;
+    refetch: () => Promise<unknown>;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
