@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, useTheme, IconButton } from '@mui/material';
-import { Dashboard as DashboardIcon, BugReport, CompareArrows, Settings, Menu as MenuIcon } from '@mui/icons-material';
+import { Dashboard as DashboardIcon, BugReport, CompareArrows, Settings, Menu as MenuIcon, Brightness4, Brightness7 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useColorMode } from '../contexts/ColorModeContext';
 
 const DRAWER_WIDTH = 240;
 
@@ -13,6 +14,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
+    const { mode, toggleColorMode } = useColorMode();
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const menuItems = [
@@ -28,11 +30,29 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     const drawer = (
         <Box sx={{ height: '100%', backgroundColor: 'rgba(10, 14, 23, 0.95)' }}>
-            <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <img src="/vite.svg" alt="Logo" width={30} height={30} />
-                <Typography variant="h6" color="primary" sx={{ fontWeight: 'bold', letterSpacing: 1 }}>
-                    SECURE<span style={{ color: theme.palette.secondary.main }}>VISA</span>
-                </Typography>
+            <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                    {/* SecureVisa Logo: Gradient Triangle + Lightning Bolt */}
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stopColor="#00E5FF" />
+                                <stop offset="100%" stopColor="#651FFF" />
+                            </linearGradient>
+                        </defs>
+                        {/* Downward pointing triangle/shield */}
+                        <path d="M4 6L16 28L28 6H4Z" fill="url(#logoGradient)" />
+                        {/* Lightning Bolt */}
+                        <path d="M18 6L13 16H17L14 24L21 12H16L18 6Z" fill="#FFD740" stroke="#0A1929" strokeWidth="1.5" strokeLinejoin="round" />
+                    </svg>
+                    <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: 0.5, fontSize: '1.25rem' }}>
+                        <span style={{ color: '#448AFF' }}>SECURE</span>
+                        <span style={{ color: '#00E5FF' }}>VISA</span>
+                    </Typography>
+                </Box>
+                <IconButton onClick={toggleColorMode} color="inherit">
+                    {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+                </IconButton>
             </Box>
             <List sx={{ mt: 2 }}>
                 {menuItems.map((item) => (
