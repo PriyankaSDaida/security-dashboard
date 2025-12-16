@@ -1,7 +1,7 @@
 export const CHART_COLORS = {
-    Critical: '#EF4444', // Red 500 (Matches theme error)
-    High: '#F59E0B',     // Amber 500 (Matches theme warning)
-    Medium: '#FBBF24',   // Amber 400
-    Low: '#10B981',      // Emerald 500 (Matches theme success)
-    Safe: '#3B82F6'      // Blue 500 (Matches theme primary)
+    Critical: '#D32F2F', // Standard Red
+    High: '#ED6C02',     // Standard Orange
+    Medium: '#F57C00',   // Amber
+    Low: '#2E7D32',      // Forest Green
+    Safe: '#1976D2'      // Corporate Blue
 };

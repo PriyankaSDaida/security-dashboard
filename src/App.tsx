@@ -6,6 +6,7 @@ import { DataProvider } from './contexts/DataContext';
 import { ColorModeProvider, useColorMode } from './contexts/ColorModeContext';
 import { ModernLayout } from './components/ModernLayout';
 import { Dashboard } from './pages/Dashboard';
+import { ModernDashboard } from './pages/ModernDashboard';
 import { ExecutiveDashboard } from './pages/ExecutiveDashboard';
 import { VulnerabilityList } from './pages/VulnerabilityList';
 import { Compare } from './pages/Compare';
@@ -29,6 +30,7 @@ const AppContent: React.FC = () => {
               <Route element={<ModernLayout />}>
                 <Route path="/" element={<ExecutiveDashboard />} />
                 <Route path="/detailed" element={<Dashboard />} />
+                <Route path="/modern" element={<ModernDashboard />} />
                 <Route path="/vulnerabilities" element={<VulnerabilityList />} />
                 <Route path="/compare" element={<Compare />} />
                 <Route path="/settings" element={<Settings />} />

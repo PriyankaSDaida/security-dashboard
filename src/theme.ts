@@ -1,131 +1,182 @@
-import { createTheme } from '@mui/material/styles';
-import type { ThemeOptions } from '@mui/material/styles';
+import { createTheme, type ThemeOptions } from '@mui/material/styles';
 
-// Option 2: Corporate Slate (Dark Mode)
+// 2. ENTERPRISE STANDARD (MNC Professional)
 const darkThemeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#3B82F6', // Royal Blue
-      light: '#60A5FA',
-      dark: '#2563EB',
+      main: '#2196F3', // Corporate Blue
+      light: '#64B5F6',
+      dark: '#1976D2',
     },
     secondary: {
-      main: '#6366F1', // Indigo
-      light: '#818CF8',
-      dark: '#4F46E5',
+      main: '#546E7A', // Blue Grey
+      light: '#78909C',
+      dark: '#37474F',
     },
     background: {
-      default: '#0F172A', // Slate 900
-      paper: '#1E293B',   // Slate 800
+      default: '#121212', // Neutral Dark
+      paper: '#1E1E1E',   // Elevated Surface
     },
     text: {
-      primary: '#F8FAFC', // Slate 50
-      secondary: '#94A3B8', // Slate 400
+      primary: '#FFFFFF',
+      secondary: '#B0BEC5',
     },
+    divider: 'rgba(255, 255, 255, 0.12)',
     error: {
-      main: '#EF4444',
+      main: '#D32F2F', // Standard Red
     },
     warning: {
-      main: '#F59E0B',
+      main: '#ED6C02', // Standard Orange
     },
     success: {
-      main: '#10B981',
+      main: '#2E7D32', // Forest Green
     },
-    divider: '#334155', // Slate 700
+    info: {
+      main: '#0288D1', // Info Blue
+    },
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: { fontSize: '2.5rem', fontWeight: 700, letterSpacing: '-0.02em', color: '#F8FAFC' },
-    h2: { fontSize: '2rem', fontWeight: 600, letterSpacing: '-0.01em', color: '#F8FAFC' },
-    h3: { fontSize: '1.75rem', fontWeight: 600, color: '#F1F5F9' },
-    h6: { fontWeight: 600, color: '#F1F5F9' },
-    button: { textTransform: 'none', fontWeight: 600 },
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', // Standard Enterprise Font
+    h1: { fontWeight: 700, letterSpacing: '-0.01em' },
+    h2: { fontWeight: 600, letterSpacing: '-0.005em' },
+    h3: { fontWeight: 600 },
+    h4: { fontWeight: 600 },
+    h6: { fontWeight: 600 },
+    button: { textTransform: 'none', fontWeight: 500 },
+  },
+  shape: {
+    borderRadius: 4, // Professional soft rounding
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          scrollbarColor: "#424242 #121212",
+          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+            backgroundColor: "#121212",
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+            borderRadius: 4,
+            backgroundColor: "#424242",
+            minHeight: 24,
+            border: "1px solid #121212",
+          },
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid #334155', // Slate 700
+          border: '1px solid #333', // Subtle, clean border
+          boxShadow: 'none', // Flat design
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 4,
+          boxShadow: 'none',
+          textTransform: 'none',
+        },
+        containedPrimary: {
+          fontWeight: 600,
           boxShadow: 'none',
           '&:hover': {
-            boxShadow: '0 4px 12px rgba(15, 23, 42, 0.5)',
-          },
+            boxShadow: 'none',
+            backgroundColor: '#1976D2',
+          }
         },
       },
     },
-    MuiCssBaseline: {
+    MuiCard: {
       styleOverrides: {
-        body: {
-          scrollbarColor: '#3B82F6 #0F172A',
-          '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
-            backgroundColor: 'transparent',
-            width: '8px',
-            height: '8px',
-          },
-          '&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb': {
-            borderRadius: 8,
-            backgroundColor: '#3B82F6',
-            minHeight: 24,
-            border: '2px solid #0F172A',
-          },
+        root: {
+          backgroundImage: 'none',
+          boxShadow: 'none',
+          border: '1px solid #333',
         },
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          backgroundColor: '#1E1E1E',
+          borderBottom: '1px solid #333',
+          boxShadow: 'none',
+        }
+      }
+    }
   },
 };
 
-// Corporate Slate (Light Mode) - Clean Professional
+// Option 1: Royal Indigo (Modern SaaS)
 const lightThemeOptions: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#2563EB', // Blue 600
-      light: '#3B82F6',
-      dark: '#1D4ED8',
+      main: '#4F46E5', // Indigo 600
+      light: '#818CF8', // Indigo 400
+      dark: '#3730A3', // Indigo 800
     },
     secondary: {
-      main: '#4F46E5', // Indigo 600
-      light: '#6366F1',
-      dark: '#4338CA',
+      main: '#64748B', // Slate 500
+      light: '#94A3B8',
+      dark: '#334155',
     },
     background: {
-      default: '#F1F5F9', // Slate 100
-      paper: '#FFFFFF',
+      default: '#FAFAFA', // Ice White
+      paper: '#FFFFFF', // Pure White
     },
     text: {
-      primary: '#0F172A', // Slate 900
+      primary: '#1E293B', // Slate 800
       secondary: '#64748B', // Slate 500
     },
-    divider: '#E2E8F0', // Slate 200
+    divider: 'rgba(0, 0, 0, 0.08)',
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-    h1: { fontSize: '2.5rem', fontWeight: 700, letterSpacing: '-0.02em', color: '#0F172A' },
-    h2: { fontSize: '2rem', fontWeight: 600, letterSpacing: '-0.01em', color: '#0F172A' },
-    h3: { fontSize: '1.75rem', fontWeight: 600, color: '#1E293B' },
-    h6: { fontWeight: 600, color: '#1E293B' },
+    fontFamily: '"Plus Jakarta Sans", "Inter", sans-serif',
+    h1: { fontWeight: 800, letterSpacing: '-0.025em' },
+    h2: { fontWeight: 700, letterSpacing: '-0.02em' },
+    h3: { fontWeight: 700, letterSpacing: '-0.015em' },
+    h4: { fontWeight: 700 },
+    h6: { fontWeight: 600 },
     button: { textTransform: 'none', fontWeight: 600 },
   },
+  shape: {
+    borderRadius: 12, // More modern, rounded look
+  },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          scrollbarColor: "#CBD5E1 #FAFAFA",
+          "&::-webkit-scrollbar, & *::-webkit-scrollbar": {
+            backgroundColor: "#FAFAFA",
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-thumb, & *::-webkit-scrollbar-thumb": {
+            borderRadius: 8,
+            backgroundColor: "#CBD5E1",
+            minHeight: 24,
+            border: "2px solid #FAFAFA",
+          },
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: '#FFFFFF',
-          backgroundImage: 'none',
-          border: '1px solid #E2E8F0',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-          borderRadius: 8,
+          boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)', // Extremely subtle shadow
+          border: '1px solid rgba(0, 0, 0, 0.05)',
         },
+        elevation1: {
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        }
       },
     },
     MuiButton: {
@@ -133,27 +184,29 @@ const lightThemeOptions: ThemeOptions = {
         root: {
           borderRadius: 8,
           boxShadow: 'none',
-          textTransform: 'none',
+          '&:active': {
+            transform: 'translateY(1px)',
+          }
+        },
+        containedPrimary: {
           '&:hover': {
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          },
-        },
+            boxShadow: '0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1)',
+          }
+        }
       },
     },
-    MuiCssBaseline: {
+    MuiChip: {
       styleOverrides: {
-        body: {
-          backgroundColor: '#F1F5F9',
-          scrollbarColor: '#CBD5E1 #F1F5F9',
-        },
-      },
-    },
+        root: {
+          fontWeight: 600,
+        }
+      }
+    }
   },
 };
 
 export const getTheme = (mode: 'light' | 'dark') => {
-  return createTheme(mode === 'light' ? lightThemeOptions : darkThemeOptions);
+  return createTheme(mode === 'dark' ? darkThemeOptions : lightThemeOptions);
 };
 
-export const theme = createTheme(darkThemeOptions);
-
+export const theme = createTheme(lightThemeOptions);

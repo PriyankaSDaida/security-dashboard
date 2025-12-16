@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Switch, FormControlLabel, CircularProgress } from '@mui/material';
+import { Box, Typography, Switch, FormControlLabel, CircularProgress, Button } from '@mui/material';
 import { Grid } from '@mui/material';
 import { useColorMode } from '../contexts/ColorModeContext';
 import { useDashboardStats } from '../hooks/useDashboardStats';
@@ -9,14 +9,17 @@ import { useData } from '../contexts/DataContext';
 import { SecurityKPIs } from '../components/dashboard/SecurityKPIs';
 import { HealthGauge } from '../components/dashboard/HealthGauge';
 import { RecentActivityFeed } from '../components/dashboard/RecentActivityFeed';
-import { TrendAreaChart } from '../components/dashboard/TrendAreaChart';
+import OrbitalThreatMap from '../components/dashboard/OrbitalThreatMap';
 import { SeverityDistributionChart } from '../components/dashboard/SeverityDistributionChart';
 import { TopRiskFactorsChart } from '../components/dashboard/TopRiskFactorsChart';
+
+import { useNavigate } from 'react-router-dom';
 
 export const Dashboard: React.FC = () => {
     const { mode, toggleColorMode } = useColorMode();
     const { stats, loading } = useDashboardStats();
     const { data } = useData();
+    const navigate = useNavigate();
 
     if (loading || !stats) {
         return (
@@ -33,11 +36,21 @@ export const Dashboard: React.FC = () => {
                     <Typography variant="h4" sx={{ fontWeight: 800, letterSpacing: '-0.02em', mb: 1 }}>Security Overview</Typography>
                     <Typography variant="body1" color="text.secondary">Real-time insights and performance metrics.</Typography>
                 </Box>
-                <FormControlLabel
-                    control={<Switch checked={mode === 'dark'} onChange={toggleColorMode} color="primary" />}
-                    label={mode === 'dark' ? 'Dark Mode' : 'Light Mode'}
-                    labelPlacement="start"
-                />
+                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => navigate('/modern')}
+                        sx={{ borderRadius: 4, textTransform: 'none', fontWeight: 600 }}
+                    >
+                        Try Modern View ✨
+                    </Button>
+                    <FormControlLabel
+                        control={<Switch checked={mode === 'dark'} onChange={toggleColorMode} color="primary" />}
+                        label={mode === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                        labelPlacement="start"
+                    />
+                </Box>
             </Box>
 
             <SecurityKPIs stats={stats} />
@@ -53,9 +66,10 @@ export const Dashboard: React.FC = () => {
 
                 {/* Right Column: Charts */}
                 <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+                    {/* Charts Section */}
                     <Grid container spacing={4}>
                         <Grid size={{ xs: 12 }}>
-                            <TrendAreaChart data={stats.trendData} />
+                            <OrbitalThreatMap />
                         </Grid>
 
                         <Grid size={{ xs: 12, md: 6 }}>
